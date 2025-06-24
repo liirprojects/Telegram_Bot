@@ -404,3 +404,20 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+# Build
+bin/
+obj/
+.vs/
+
+# User-specific files
+*.user
+*.suo
+
+# OS junk
+.DS_Store
+Thumbs.db
+
+# Secrets
+appsettings.json
+secrets.json
+
