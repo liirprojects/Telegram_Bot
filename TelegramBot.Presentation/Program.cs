@@ -42,5 +42,5 @@ using TelegramBot.Presentation.Telegram;
         cancellationToken: cancellationToken
     );
 
-    Console.WriteLine("✅ Бот запущен. Нажми Ctrl+C чтобы остановить.");
+    Console.WriteLine("✅ The bot is running. Press Ctrl+C to stop.");
     await Task.Delay(-1);
