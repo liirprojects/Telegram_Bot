@@ -12,7 +12,10 @@ using TelegramBot.Presentation.Telegram;
     builder.ConfigureServices((context, services) =>
     {
         // токен на телеграм бота
-        string botToken = "7880450189:AAEryAUFjGPAB3-n_xVE2JswtDP4V_aqIwA";
+        var botToken = context.Configuration["Telegram:BotToken"]
+                ?? throw new InvalidOperationException("Bot token is missing in environment variables!");
+
+        services.AddSingleton<ITelegramBotClient>(_ => new TelegramBotClient(botToken));
 
         // Регистрация Telegram-клиента
         services.AddSingleton<ITelegramBotClient>(new TelegramBotClient(botToken));

@@ -1,0 +1,11 @@
+﻿{
+  "profiles": {
+    "TelegramBot.Presentation": {
+      "commandName": "Project",
+      "dotnetRunMessages": true,
+      "environmentVariables": {
+        "Telegram:BotToken": "7880450189:AAEryAUFjGPAB3-n_xVE2JswtDP4V_aqIwA"
+      }
+    }
+  }
+}
