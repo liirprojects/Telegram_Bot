@@ -31,6 +31,7 @@ using TelegramBot.Presentation.Telegram;
 
         // Register new command for a command list
         services.AddScoped<ICommandHandler, StartCommandHandler>();
+        services.AddScoped<ICommandHandler, HelpCommandHandler>();
     });
 
     var app = builder.Build();
