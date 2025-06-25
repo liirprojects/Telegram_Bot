@@ -10,11 +10,16 @@ public class MessageService : IMessageService
 {
     private readonly ITelegramBotClient _botClient;
     private readonly ILogger<MessageService> _log;
+    private readonly IEnumerable<ICommandHandler> _commandHandlers;
 
-    public MessageService(ITelegramBotClient botClient, ILogger<MessageService> log)
+    public MessageService(
+        ITelegramBotClient botClient, 
+        ILogger<MessageService> log,
+        IEnumerable<ICommandHandler> commandHandlers)
     {
         this._botClient = botClient;
         this._log = log;
+        _commandHandlers = commandHandlers;
     }
     public async Task HandleAsync(string message, long chatId, CancellationToken cancellationToken)
     {
@@ -27,25 +32,20 @@ public class MessageService : IMessageService
         // question
         string command = message.Trim().Split(' ', '\n')[0].ToLowerInvariant();
 
-        switch (command)
+        var handler = _commandHandlers.FirstOrDefault(h => h.Command == command);
+
+        if (handler is not null)
         {
-            case "/start":
-                await OnStartAsync(chatId, cancellationToken);
-                break;
-            case "/help":
-                await OnHelpAsync(chatId, cancellationToken);
-                break;
-            case "/echo":
-                await OnEchoAsync(message, chatId, cancellationToken);
-                break;
-            default:
-                await _botClient.SendMessage(
+            await handler.HandleAsync(chatId, message, cancellationToken);
+        }
+        else
+        {
+            await _botClient.SendMessage(
                 chatId: chatId,
-                text: "Unknown command. Type /help to see available commands.",
-                parseMode: ParseMode.None,
+                text: "❓ Unknown command. Type /help to see available commands.",
                 cancellationToken: cancellationToken);
-                _log.LogWarning("Unknown command '{Command}' from chatId: {ChatId}", command, chatId);
-                break; //question
+
+            _log.LogWarning("Unknown command '{Command}' from chatId: {ChatId}", command, chatId);
         }
     }
 
