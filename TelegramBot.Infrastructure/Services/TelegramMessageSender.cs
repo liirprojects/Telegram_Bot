@@ -12,12 +12,12 @@ public class TelegramMessageSender : IMessageSender
         _botClient = botClient;
     }
 
-    public Task SendTextAsync(long chatId, string text, CancellationToken token)
+    public Task SendTextAsync(long chatId, string text, CancellationToken token, ParseMode parseMode = ParseMode.None)
     {
         return _botClient.SendMessage(
             chatId,
             text,
-            parseMode: ParseMode.Markdown,
+            parseMode: parseMode,
             cancellationToken: token);
     }
 }

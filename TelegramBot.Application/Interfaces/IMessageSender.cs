@@ -1,4 +1,6 @@
-﻿namespace TelegramBot.Application.Interfaces;
+﻿using Telegram.Bot.Types.Enums;
+
+namespace TelegramBot.Application.Interfaces;
 
 public interface IMessageSender
 {
@@ -9,5 +11,5 @@ public interface IMessageSender
     /// <param name="message">The message to send.</param>
     /// <param name="cancellationToken">A cancellation token to cancel the operation.</param>
     /// <returns>A task representing the asynchronous operation.</returns>
-    Task SendTextAsync(long chatId, string message, CancellationToken cancellationToken);
+    Task SendTextAsync(long chatId, string message, CancellationToken cancellationToken, ParseMode parseMode = ParseMode.None);
 }
