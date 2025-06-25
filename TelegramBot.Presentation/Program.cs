@@ -15,16 +15,19 @@ using TelegramBot.Presentation.Telegram;
         var botToken = context.Configuration["Telegram:BotToken"]
                 ?? throw new InvalidOperationException("Bot token is missing in environment variables!");
 
-        services.AddSingleton<ITelegramBotClient>(_ => new TelegramBotClient(botToken));
-
         // Регистрация Telegram-клиента
         services.AddSingleton<ITelegramBotClient>(new TelegramBotClient(botToken));
 
         // Подключаем бизнес-логику
-        services.AddSingleton<IMessageService, MessageService>();
+        services.AddScoped<IMessageService, MessageService>();
 
         // Подключаем обработчик обновлений
-        services.AddSingleton<IUpdateHandler, BotUpdateHandler>();
+        services.AddScoped<IUpdateHandler, BotUpdateHandler>();
+
+        // Register TelegramMessageSender as an implementation of IMessageSender.
+        // This allows teams to send messages without knowing about the Telegram API directly.
+        services.AddScoped<IMessageSender, TelegramMessageSender>();
+
     });
 
     var app = builder.Build();
