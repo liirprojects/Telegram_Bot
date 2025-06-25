@@ -4,6 +4,7 @@ using Telegram.Bot;
 using Telegram.Bot.Polling;
 using Telegram.Bot.Types.Enums;
 using TelegramBot.Application.Interfaces;
+using TelegramBot.Application.Interfaces.Commands;
 using TelegramBot.Infrastructure.Services;
 using TelegramBot.Presentation.Telegram;
 
@@ -28,6 +29,8 @@ using TelegramBot.Presentation.Telegram;
         // This allows teams to send messages without knowing about the Telegram API directly.
         services.AddScoped<IMessageSender, TelegramMessageSender>();
 
+        // Register new command for a command list
+        services.AddScoped<ICommandHandler, StartCommandHandler>();
     });
 
     var app = builder.Build();
