@@ -6,10 +6,10 @@ public abstract class CommandHandler : ICommandHandler
 
     public abstract Task HandleAsync(long chatId, string message, CancellationToken cancellationToken);
 
-    protected readonly IMessageService _messageService;
+    protected readonly IMessageSender _messageSender;
 
-    protected CommandHandler(IMessageService messageService)
+    protected CommandHandler(IMessageSender messageSender)
     {
-        _messageService = messageService;
+        _messageSender = messageSender;
     }
 }
