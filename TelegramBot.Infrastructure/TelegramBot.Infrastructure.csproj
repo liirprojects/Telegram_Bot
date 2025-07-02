@@ -7,10 +7,11 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<ProjectReference Include="..\TelegramBot.Application\TelegramBot.Application.csproj" />
+	  <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="9.0.6" />
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\TelegramBot.Application\TelegramBot.Application.csproj" />
 	</ItemGroup>
 
 </Project>
