@@ -1,28 +1,34 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Telegram.Bot;
 using Telegram.Bot.Polling;
 using Telegram.Bot.Types.Enums;
 using TelegramBot.Application.Interfaces;
 using TelegramBot.Application.Interfaces.Commands;
+using TelegramBot.Infrastructure.Data;
 using TelegramBot.Infrastructure.Services;
 using TelegramBot.Presentation.Telegram;
 
-    var builder = Host.CreateDefaultBuilder(args);
 
-    builder.ConfigureServices((context, services) =>
+var builder = Host.CreateDefaultBuilder(args);
+
+builder.ConfigureServices((context, services) =>
     {
-        // токен на телеграм бота
+        // Add Entity Framework Core with SQL Server support
+        var connectionString = context.Configuration.GetConnectionString("DefaultConnection");
+        services.AddDbContext<AppDbContext>(options => options.UseSqlServer(connectionString));
+
+        // tocken for a telegram bot 
         var botToken = context.Configuration["Telegram:BotToken"]
                 ?? throw new InvalidOperationException("Bot token is missing in environment variables!");
 
-        // Регистрация Telegram-клиента
+        // Telegram-client registration
         services.AddSingleton<ITelegramBotClient>(new TelegramBotClient(botToken));
 
-        // Подключаем бизнес-логику
+        // Add services for the application
         services.AddScoped<IMessageService, MessageService>();
-
-        // Подключаем обработчик обновлений
         services.AddScoped<IUpdateHandler, BotUpdateHandler>();
 
         // Register TelegramMessageSender as an implementation of IMessageSender.
@@ -51,3 +57,5 @@ using TelegramBot.Presentation.Telegram;
 
     Console.WriteLine("✅ The bot is running. Press Ctrl+C to stop.");
     await Task.Delay(-1);
+
+
