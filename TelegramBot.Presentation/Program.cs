@@ -57,5 +57,3 @@ builder.ConfigureServices((context, services) =>
 
     Console.WriteLine("✅ The bot is running. Press Ctrl+C to stop.");
     await Task.Delay(-1);
-
-
